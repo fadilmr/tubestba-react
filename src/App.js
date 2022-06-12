@@ -11,7 +11,7 @@ function App() {
     var inputString = input + "#";
     const stateList = ["q0", "q1", "q2",  "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10",
     "q11", "q12", "q13", "q14", "q15", "q16", "q17", "q18", "q19", "q20",
-    "q21", "q22", "q23", "q24", "q25", "q26"
+    "q21", "q22", "q23", "q24", "q25", "q26", "q27", "q28", "q29"
     ]
 
     const alphabetList = [];
@@ -89,6 +89,12 @@ function App() {
     transitionTable['q25']['a'] = 'q26'
     transitionTable['q26']['l'] = 'q2'
 
+    // haha
+    transitionTable['q0']['h'] = 'q27'
+    transitionTable['q27']['a'] = 'q28'
+    transitionTable['q28']['h'] = 'q29'
+    transitionTable['q29']['a'] = 'q2'
+
     // accept
     transitionTable['q0'][' '] = 'q0'
     transitionTable['q2'][' '] = 'q0'
@@ -126,8 +132,8 @@ function App() {
   
       // symbols definition
   
-      const non_terminal = ['S', 'SU', 'V', 'O']
-      const terminal =['au','ibana','haha','injam','marmeam','mengaut','manjait','marnida','bal','abit','tas']
+      const non_terminal = ['S', 'SU', 'V', 'O', 'P']
+      const terminal =['au','ibana','haha','injam','marmeam','mengaut','manjait','marnida','bal','abit','tas', 'taho']
   
       // parse table definition
   
@@ -138,13 +144,14 @@ function App() {
           'ibana': ['SU', 'V', 'O'],
           'haha': ['SU', 'V', 'O'],
           'injam': ['SU', 'V', 'O'],
-          'marmeam': ['SU', 'V', 'O'],
-          'mengaut': ['SU', 'V', 'O'],
-          'manjait': ['SU', 'V', 'O'],
-          'marnida': ['SU', 'V', 'O'],
-          'bal': ['SU', 'V', 'O'],
-          'abit': ['SU', 'V', 'O'],
-          'tas': ['SU', 'V', 'O'],
+          'marmeam': ['error'],
+          'mengaut': ['error'],
+          'manjait': ['error'],
+          'marnida': ['error'],
+          'bal': ['error'],
+          'abit': ['error'],
+          'tas': ['error'],
+          'taho': ['error'],
           'EOS': ['error']
       }
   
@@ -152,15 +159,32 @@ function App() {
           'au': ['au'],
           'ibana': ['ibana'],
           'haha': ['haha'],
-          'marmeam': ['marmeam'],
-          'mengaut': ['mengaut'],
-          'manjait': ['manjait'],
-          'marnida': ['marnida'],
+          'marmeam': ['error'],
+          'mengaut': ['error'],
+          'manjait': ['error'],
+          'marnida': ['error'],
           'bal': ['error'],
           'abit': ['error'],
           'tas': ['error'],
+          'taho': ['error'],
           'EOS': ['error']
       }
+
+      parse_table['P'] = {
+        'au': ['error'],
+        'ibana': ['error'],
+        'haha': ['error'],
+        'marmeam': ['error'],
+        'mengaut': ['error'],
+        'manjait': ['error'],
+        'marnida': ['error'],
+        'bal': ['error'],
+        'abit': ['error'],
+        'tas': ['error'],
+        'taho': ['taho'],
+        'EOS': ['error']
+    }
+      
   
       parse_table['V'] = {
           'au': ['error'],
@@ -174,6 +198,7 @@ function App() {
           'bal': ['error'],
           'abit': ['error'],
           'tas': ['error'],
+          'taho': ['P', 'V'],
           'EOS': ['error']
       }
   
@@ -188,6 +213,7 @@ function App() {
           'marnida': ['error'],
           'bal': ['bal'],
           'abit': ['abit'],
+          'taho': ['error'],
           'tas': ['tas'],
           'EOS': ['accept']
       }
@@ -252,17 +278,57 @@ function App() {
   }
 
   return (
-    <div className="bg-pastelpink-500">
-      <div className="flex h-screen w-full container">
-        <form action="" className="bar" onSubmit={handleSubmit}>
-            <input type="text" placeholder="Masukkan sebuah kalimat" value={input} onChange={(e) => setInput(e.target.value)} name="sentence" autoComplete="off" id="sentence"/>
-            <button type="submit" className="bg-sky-200 opacity-50 hover:bg-blue-700 p-4 rounded-full" id="button">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-            </button>
-        </form>
-    </div>
+    <div className="bg-gradient-to-r from-pastelpink-600 to-purple-300">
+      <div className="flex-row h-screen w-full container">
+        <div className="text-xl font-bold text-center text-pastelpink-100 opacity-80"> 
+            PARSER - BAHASA BATAK
+        </div>
+        <div className="flex m-6 p-6 justify-center">
+          <form action="" className="bar flex" onSubmit={handleSubmit}>
+              <input className="placeholder:italic placeholder:text-pastelpink-50 placeholder:opacity-50 text-white" type="text" placeholder="Masukkan sebuah kalimat" value={input} onChange={(e) => setInput(e.target.value)} name="sentence" autoComplete="off" id="sentence"/>
+              <button type="submit" className="bg-white opacity-40 hover:bg-gradient-to-r from-pastelpink-600 to-purple-400 p-4 rounded-full" id="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+              </button>
+          </form>
+        </div>
+
+        <div className="grid grid-cols lg:grid-cols-4 gap-2 m-3 p-3">
+            <div className="bg-white opacity-50 p-2 rounded-lg">
+              <div className="text-center font-bold mb-4">SU</div>
+              <ol className="ml-6 lowercase list-disc">
+                <li>au : aku</li>
+                <li>ibana : dia</li>
+                <li>haha : kakak</li>
+              </ol>
+            </div>
+            <div className="bg-white opacity-50  p-2 rounded-lg">
+              <div className="text-center font-bold mb-4">V</div>
+              <ol className="ml-6 lowercase list-disc">
+                <li>injam : meminjam</li>
+                <li>marmeam : bermain</li>
+                <li>mangaut : mengambil</li>
+                <li>manjait : menjahit</li>
+                <li>marnida : melihat</li>
+              </ol>
+            </div>
+            <div className="bg-white opacity-50 p-2 rounded-lg">
+              <div className="text-center font-bold mb-4">P</div>
+              <ol className="ml-6 lowercase list-disc">
+                <li>taho : Sedang</li>
+              </ol>
+            </div>
+            <div className="bg-white opacity-50 p-2 rounded-lg">
+              <div className="text-center font-bold mb-4">O</div>
+              <ol className="ml-6 lowercase list-disc">
+                <li>bal : bola</li>
+                <li>abit : baju</li>
+                <li>tas : tas</li>
+              </ol>
+            </div>
+          </div>
+      </div>
     </div>
     
   );
