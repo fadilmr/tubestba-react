@@ -4,6 +4,8 @@ function App() {
 
 
   const [input, setInput] = useState("");
+  const [hasil, setHasil] = useState(false);
+  const [tampil, setTampil] = useState(false);
 
   
   const handleSubmit = (e) => {
@@ -247,7 +249,7 @@ function App() {
               }
           } else if (non_terminal.includes(top)) {
               console.log('top adalah simbol non terminal')
-              if (parse_table[top][symbol] &&  parse_table[top][symbol][0] !== 'error') {
+              if (parse_table[top][symbol] && parse_table[top][symbol][0] !== 'error') {
                   stack.pop()
                   var symbols_to_be_pushed = parse_table[top][symbol]
                   for (var i = symbols_to_be_pushed.length - 1; i >= 0; i--) {
@@ -269,12 +271,20 @@ function App() {
       console.log('\n')
       if (symbol === 'EOS' && stack.length === 0) {
           console.log('input string', input, 'diterima sesuai grammar')
-      } else {
+          setHasil(true)
+        } else {
           console.log('input string', input, 'tidak diterima sesuai grammar')
-      }
-    } else {
+          setHasil(false)
+        }
+      } else {
         console.log('format sentence tidak sesuai')
+        setHasil(false)
     }
+
+    setTampil(true)
+    setInterval(() => {
+      setTampil(false)
+    }, 2500);
   }
 
   return (
@@ -292,10 +302,28 @@ function App() {
                   </svg>
               </button>
           </form>
+          { tampil === true && hasil === true &&
+            <div className="flex items-center ml-4">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="green" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          }
+
+          { tampil === true &&  hasil === false &&
+            <div className="flex items-center ml-4">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="red" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          }
+          
         </div>
 
+        <div className="text-xl font-bold text-center text-pastelpink-100 opacity-80">Format Grammar : SU - V - O atau SU - P - V - O</div>
+
         <div className="grid grid-cols lg:grid-cols-4 gap-2 m-3 p-3">
-            <div className="bg-white opacity-50 p-2 rounded-lg">
+            <div className="bg-white opacity-50 p-5 rounded-lg">
               <div className="text-center font-bold mb-4">SU</div>
               <ol className="ml-6 lowercase list-disc">
                 <li>au : aku</li>
@@ -303,7 +331,7 @@ function App() {
                 <li>haha : kakak</li>
               </ol>
             </div>
-            <div className="bg-white opacity-50  p-2 rounded-lg">
+            <div className="bg-white opacity-50  p-5 rounded-lg">
               <div className="text-center font-bold mb-4">V</div>
               <ol className="ml-6 lowercase list-disc">
                 <li>injam : meminjam</li>
@@ -313,13 +341,13 @@ function App() {
                 <li>marnida : melihat</li>
               </ol>
             </div>
-            <div className="bg-white opacity-50 p-2 rounded-lg">
+            <div className="bg-white opacity-50 p-5 rounded-lg">
               <div className="text-center font-bold mb-4">P</div>
               <ol className="ml-6 lowercase list-disc">
                 <li>taho : Sedang</li>
               </ol>
             </div>
-            <div className="bg-white opacity-50 p-2 rounded-lg">
+            <div className="bg-white opacity-50 p-5 rounded-lg">
               <div className="text-center font-bold mb-4">O</div>
               <ol className="ml-6 lowercase list-disc">
                 <li>bal : bola</li>
@@ -328,9 +356,11 @@ function App() {
               </ol>
             </div>
           </div>
+          <div className="">
+            <div className="text-center font-bold mb-4 text-pastelpink-50 opacity-80">Muhammad Fadil Maulana Akbar - 1301204297 | Muhammad Naufal - 1301204297 | Muhammad Rizky Firdaus - 1301204297</div>
+          </div>
       </div>
     </div>
-    
   );
 }
 

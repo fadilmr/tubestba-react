@@ -9,6 +9,8 @@ module.exports = {
       current: "currentColor",
       black: "#000",
       white: "#fff",
+      green: "#00FF00",
+      red: "#FF0000",
       'purple': {
         '100': '#F806CC',
         '200': '#A91079',
